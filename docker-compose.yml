@@ -1,0 +1,66 @@
+version: "3"
+
+services:
+  app:
+    container_name: blp-app
+    build:
+      context: .
+      dockerfile: ./php/Dockerfile
+      args:
+        - TZ=${TZ}
+    volumes:
+      - ${PROJECT_PATH}:/var/www/
+    links:
+      - db_master
+    environment:
+      - DB_CONNECTION=${DB_CONNECTION}
+      - DB_HOST=db_master
+      - DB_DATABASE=${DB_NAME}
+      - DB_USERNAME=${DB_USER}
+      - DB_PASSWORD=${DB_PASS}
+      - TZ=${TZ}
+      - MAIL_HOST=${MAIL_HOST}
+      - MAIL_PORT=${MAIL_PORT}
+
+  web:
+    container_name: blp-web
+    build:
+      context: .
+      dockerfile: ./nginx/Dockerfile
+      args:
+        - TZ=${TZ}
+    volumes:
+      - ./nginx/logs:/etc/nginx/logs
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ${PROJECT_PATH}:/var/www/
+    ports:
+      - ${WEB_PORT}:80
+    links:
+      - app
+    depends_on:
+      - app
+
+  db_master:
+    container_name: blp-db
+    image: mysql:5.7
+    environment:
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS}
+      - TZ=${TZ}
+    ports:
+      - ${DB_PORT}:3306
+
+  phpmyadmin:
+    container_name: blp-phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - db_master
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOSTS: mysql
+      PMA_USER: ${DB_USERNAME:-root}
+      PMA_PASSWORD: ${DB_PASSWORD:-root}
+    ports:
+      - '9090:80'
