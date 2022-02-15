@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '47ae69ee81a0d438445821d942c47882d6d08436',
+        'reference' => 'e2f7127c536e30f4ff5429c8446d709a62eb5a32',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -379,7 +379,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '47ae69ee81a0d438445821d942c47882d6d08436',
+            'reference' => 'e2f7127c536e30f4ff5429c8446d709a62eb5a32',
             'dev_requirement' => false,
         ),
         'laravel/sanctum' => array(

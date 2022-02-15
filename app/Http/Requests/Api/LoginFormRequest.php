@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Http\Requests\Common\ApiFormRequestTrait;
+use App\Http\Requests\Api\Common\ApiFormRequestTrait;
 
 class LoginFormRequest extends FormRequest
 {
@@ -16,7 +16,7 @@ class LoginFormRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Requests\Common;
+namespace App\Http\Requests\Api\Common;
 
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Validation\Validator;
+use Illuminate\Contracts\Validation\Validator;
 
 trait ApiFormRequestTrait
 {
