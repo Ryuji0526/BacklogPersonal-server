@@ -14,12 +14,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// メールアドレス認証
+Route::get('/email/verify/{id}/{hash}', 'VerifyEmailController@__invoke')
+    ->middleware(['signed'])
+    ->name('verification.verify');
+
 Route::namespace('Api')->name('api.')->group(function () {
     Route::prefix('login')->name('login')->group(function () {
-        Route::post('/', 'LoginController@login');
+        Route::post('/', 'UserController@login');
     });
 
-    Route::group(['middleware' => 'auth:sanctum'],function(){
+    Route::post('/register', 'UserController@register')->name('register');
+
+    Route::group(['middleware' => ['auth:sanctum', 'verified']],function(){
         Route::get('/user','UserController@getUser');
+        Route::post('/logout','UserController@logout');
     });
 });

@@ -34,13 +34,7 @@ return [
     'allowed_origins_patterns' => [],
 
     'allowed_headers' => [
-        'Content-Type',
-        'X-Auth-Token',
-        'X-Xsrf-Token',
-        'Origin',
-        'Authorization',
-        'Accept',
-        'X-Requested-With'
+        '*',
     ],
 
     'exposed_headers' => [
