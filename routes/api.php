@@ -29,5 +29,10 @@ Route::namespace('Api')->name('api.')->group(function () {
     Route::group(['middleware' => ['auth:sanctum', 'verified']],function(){
         Route::get('/user','UserController@getUser');
         Route::post('/logout','UserController@logout');
+        Route::prefix('issues')->name('issues')->group(function () {
+            Route::prefix('myself')->name('myself')->group(function () {
+        Route::get('/', 'UserIssueController@getMyIssues');
+            });
+        });
     });
 });
