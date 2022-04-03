@@ -2,8 +2,6 @@
 
 namespace App\Repositories\Interfaces;
 
-use PHPUnit\Util\Json;
-use App\Models\User;
 use Psr\Http\Message\StreamInterface;
 
 interface UserIssueRepositoryInterface

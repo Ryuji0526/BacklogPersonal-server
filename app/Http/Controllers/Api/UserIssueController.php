@@ -7,9 +7,10 @@ namespace App\Http\Controllers\APi;
 
 use App\Http\Controllers\Controller;
 use App\Modules\ApplicationLogger;
-use Illuminate\Http\Request;
 use App\Services\UserIssueService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\DailyReport;
 
 class UserIssueController extends Controller
 {
@@ -27,11 +28,11 @@ class UserIssueController extends Controller
             $user =  Auth::user();
             $logger->write("自分の課題を全て取得します。");
             $issues = $this->userIssueService->fetchMyAllIssues($user);
-            $logger->write($issues);
-            // ddd($issues);
+            // $issueContents = $issues->getContents();
+            Mail::to($user->email)->send(new DailyReport(json_decode($issues, true)));
             return response()->json($issues, 200);
         } catch (\Throwable $e) {
-            $logger->exception($e);
+            $logger->write($e->getMessage());
             return response()->json('課題の取得に失敗しました', 400);
         }
     }

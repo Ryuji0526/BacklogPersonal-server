@@ -59,8 +59,8 @@ services:
       - db_master
     environment:
       PMA_ARBITRARY: 1
-      PMA_HOSTS: mysql
-      PMA_USER: ${DB_USERNAME:-root}
-      PMA_PASSWORD: ${DB_PASSWORD:-root}
+      PMA_HOST: db_master
+      PMA_USER: ${DB_USERNAME}
+      PMA_PASSWORD: ${DB_PASSWORD}
     ports:
       - '9090:80'

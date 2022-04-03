@@ -37,7 +37,7 @@ class VerifyEmailController extends Controller
       return redirect(env('ORIGIN_NAME') . '/');
 
     } catch (\Exception $e) {
-      $logger->exception($e);
+      $logger->write($e->getMessage());
     }
   }
 }

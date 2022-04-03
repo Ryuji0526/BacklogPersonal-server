@@ -50,7 +50,7 @@ class UserController extends Controller
                 return response()->json(['user' => $user], 200);
             });
         } catch (\Throwable $e) {
-            $logger->exception($e);
+            $logger->write($e->getMessage());
             return response()->json('新規登録に失敗しました', 400);
         }
     }
@@ -87,7 +87,7 @@ class UserController extends Controller
             $logger->success();
             return response()->json(compact('token'), 200);
         } catch(\Throwable $e) {
-            $logger->exception($e);
+            $logger->write($e->getMessage());
             return response()->json('ログインに失敗しました', 400);
         }
     }
@@ -106,7 +106,7 @@ class UserController extends Controller
             $status = 200;
             $logger->write('ログアウト処理を正常に行いました');
         } catch(\Throwable $e) {
-            $logger->exception($e);
+            $logger->write($e->getMessage());
             $message = 'ログアウトに失敗しました';
             $status = 400;
         }
