@@ -3,14 +3,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\APi;
 
-// require __DIR__ . '/vender/autoload.php';
-
 use App\Http\Controllers\Controller;
 use App\Modules\ApplicationLogger;
 use App\Services\UserIssueService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\DailyReport;
 
 class UserIssueController extends Controller
 {
@@ -21,6 +17,11 @@ class UserIssueController extends Controller
         $this->userIssueService = $userIssueService;
     }
 
+    /**
+     * 自分の課題を全て取得
+     *
+     * @return void
+     */
     public function getMyIssues()
     {
         $logger = new ApplicationLogger(__METHOD__);
@@ -28,8 +29,6 @@ class UserIssueController extends Controller
             $user =  Auth::user();
             $logger->write("自分の課題を全て取得します。");
             $issues = $this->userIssueService->fetchMyAllIssues($user);
-            // $issueContents = $issues->getContents();
-            Mail::to($user->email)->send(new DailyReport(json_decode($issues, true)));
             return response()->json($issues, 200);
         } catch (\Throwable $e) {
             $logger->write($e->getMessage());

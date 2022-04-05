@@ -8,6 +8,7 @@ class RepositoryServiceProvider extends ServiceProvider
 {
     private const REPOSITORY_NAME = [
         'UserIssue',
+        'User',
     ];
 
     /**

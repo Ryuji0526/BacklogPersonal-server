@@ -3,12 +3,10 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Models\Project;
 use App\Models\User;
 use App\Repositories\Interfaces\UserIssueRepositoryInterface;
 use GuzzleHttp\Client;
-use PHPUnit\Util\Json;
-use Psr\Http\Message\StreamInterface;
-use App\Modules\ApplicationLogger;
 
 class UserIssueRepository implements UserIssueRepositoryInterface
 {
@@ -22,24 +20,44 @@ class UserIssueRepository implements UserIssueRepositoryInterface
   /**
    * 担当者の課題を全て取得する
    *
-   * @param string $url
-   * @param string $projectId
+   * @param User $user
    * @param string $id
    * @return string
    */
-  public function fetchAllIssues(string $url, string $apiKey, string $projectId, string $assigneeId): string
+  public function fetchAllIssues(User $user, string $projectId, string $assigneeId): string
   {
-    $logger = new ApplicationLogger(__METHOD__);
-    $sendUrl = "{$url}/api/v2/issues?";
+    $sendUrl = "{$user->backlog_url}/api/v2/issues?";
     $response = $this->client->request('GET', $sendUrl, [
       'query' => [
-        'apiKey' => $apiKey,
+        'apiKey' => $user->api_key,
         'projectId[]' => $projectId,
         'assigneeId[]' => $assigneeId,
       ]
     ]);
-    $logger->success();
+    return $response->getBody()->getContents();
+  }
+
+  /**
+   * その日更新されたデータを取得する
+   *
+   * @param User $user
+   * @param Project $project
+   * @param string $date
+   * @return string
+   */
+  public function fetchUpdatedIssues(User $user, Project $project, string $date): string
+  {
+    $sendUrl = "{$user->backlog_url}/api/v2/issues?";
+    // $sendUrl = "https://aidma-dev.backlog.com/api/v2/issues?";
+    $response = $this->client->request('GET', $sendUrl, [
+      'query' => [
+        'apiKey' => $user->api_key,
+        'projectId[]' => $project->project_id,
+        'assigneeId[]' => $project->assignee_id,
+        'updatedSince' => $date,
+        'updatedUntil' => $date,
+      ]
+    ]);
     return $response->getBody()->getContents();
   }
 }
-
