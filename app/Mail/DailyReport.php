@@ -4,10 +4,9 @@ namespace App\Mail;
 
 use App\Modules\ApplicationLogger;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Psr\Http\Message\StreamInterface;
+use Illuminate\Support\Facades\Log;
 
 class DailyReport extends Mailable
 {
@@ -26,14 +25,13 @@ class DailyReport extends Mailable
     }
 
     /**
-     * Build the message.
+     * 日報メール送信
      *
-     * @return $this
+     * @return void
      */
     public function build()
     {
         $logger = new ApplicationLogger(__METHOD__);
-        $logger->write($this->issues[0]['summary']);
         return $this->view('emails.dailyReport.index')->subject('[BacklogPersonal]日報');
     }
 }
