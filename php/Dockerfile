@@ -21,4 +21,10 @@ RUN apk upgrade --update && apk add --no-cache \
   apk del tzdata && \
   rm -rf /var/cache/apk/*
 
+
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+RUN mkdir -p /var/spool/cron/crontabs
+COPY --chown=root:root cron.root /var/spool/cron/crontabs/root
+
+CMD crond -l 2 -f
